@@ -36,11 +36,13 @@ export class MainScreen implements CreateSceneClass {
 
     // Setup Floor
     const groundFloors: AbstractMesh[] = [];
-    const floorAsset = assets.models["floor.glb"];
-    for (const mesh of floorAsset.loadedMeshes) {
-      mesh.checkCollisions = true;
+    const roomAsset = assets.models["room.glb"];
+    for (const mesh of roomAsset.loadedMeshes) {
       mesh.position.y += 0.2;
-      groundFloors.push(mesh);
+      mesh.checkCollisions = true;
+      if (mesh.name === "Floor") {
+        groundFloors.push(mesh);
+      }
     }
 
     await new Promise<null | WebXRDefaultExperience>(async (resolve) => {

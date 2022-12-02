@@ -26,7 +26,7 @@ export class CustomLoadingScreen implements ILoadingScreen {
     private _progress = "0"
   ) {
     this._logo = document.createElement("img");
-    this._logo.src = "/assets/images/loader.gif";
+    this._logo.src = `${window.location.href}/assets/images/loader.gif`;
     this._logo.style.width = "150px";
     this._logo.style.objectFit = "contain";
     this._logo.alt = "loading logo";

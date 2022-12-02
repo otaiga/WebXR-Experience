@@ -35,7 +35,7 @@ export const loadAllAssets = (
     let textures: string[] = [];
     let sounds: string[] = [];
     let containerModels: string[] = [];
-    let models: string[] = ["floor.glb"];
+    let models: string[] = ["room.glb"];
 
     const assetsContainer: AssetsObject = {
       models: {},
@@ -50,7 +50,7 @@ export const loadAllAssets = (
       const modelTask = assetsManager.addMeshTask(
         model,
         "",
-        "assets/models/",
+        `${window.location.href}assets/models/`,
         model
       );
       modelTask.onSuccess = (task) => {
@@ -66,7 +66,7 @@ export const loadAllAssets = (
       const containerTask = assetsManager.addContainerTask(
         container,
         "",
-        `assets/models/`,
+        `${window.location.href}assets/models/`,
         container
       );
       containerTask.onSuccess = (task) => {
@@ -81,7 +81,7 @@ export const loadAllAssets = (
     for (const cubeText of cubeTextures) {
       const cubeTextureTask = assetsManager.addCubeTextureTask(
         cubeText,
-        `assets/textures/${cubeText}`,
+        `${window.location.href}assets/textures/${cubeText}`,
         undefined,
         undefined,
         undefined,
@@ -99,7 +99,7 @@ export const loadAllAssets = (
     for (const sound of sounds) {
       const binaryTask = assetsManager.addBinaryFileTask(
         sound,
-        `assets/sounds/${sound}`
+        `${window.location.href}assets/sounds/${sound}`
       );
       binaryTask.onSuccess = (task) => {
         assetsContainer.sounds[sound] = task;
@@ -113,7 +113,7 @@ export const loadAllAssets = (
     for (const texture of textures) {
       const textTask = assetsManager.addTextureTask(
         texture,
-        `assets/textures/${texture}`,
+        `${window.location.href}assets/textures/${texture}`,
         false,
         false
       );
@@ -129,7 +129,7 @@ export const loadAllAssets = (
     for (const image of images) {
       const imageTask = assetsManager.addImageTask(
         image,
-        `assets/images/${image}`
+        `${window.location.href}assets/images/${image}`
       );
       imageTask.onSuccess = (task) => {
         assetsContainer.images[image] = task;

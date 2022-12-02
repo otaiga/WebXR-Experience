@@ -4,6 +4,7 @@ import { getSceneModuleWithName } from "./createScene";
 import { CustomLoadingScreen } from "./support/customLoader";
 import "@babylonjs/core/Engines/WebGPU/Extensions/engine.uniformBuffer";
 import "@babylonjs/loaders";
+import "./styles.css";
 
 const babylonInit = async (): Promise<void> => {
   // get the module to load

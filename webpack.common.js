@@ -36,6 +36,22 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
+        test: /\.css$/,
+        use: [
+          "style-loader",
+          {
+            loader: "css-loader",
+            options: {
+              modules: {
+                localIdentName: "[hash:base64]", // default
+                auto: true, // default
+              },
+              sourceMap: true,
+            },
+          },
+        ],
+      },
+      {
         test: /\.(png|jpg|gif|env|glb|gltf|stl)$/i,
         use: [
           {
@@ -62,10 +78,10 @@ module.exports = {
           from: path.resolve(__dirname, "public/assets/images"),
           to: path.resolve(__dirname, "dist/assets/images"),
         },
-        // {
-        //   from: path.resolve(__dirname, "public/assets/models"),
-        //   to: path.resolve(__dirname, "dist/assets/models"),
-        // },
+        {
+          from: path.resolve(__dirname, "public/assets/models"),
+          to: path.resolve(__dirname, "dist/assets/models"),
+        },
         // {
         //   from: path.resolve(__dirname, "public/assets/videos"),
         //   to: path.resolve(__dirname, "dist/assets/videos"),
@@ -73,10 +89,6 @@ module.exports = {
         {
           from: path.resolve(__dirname, "public/assets/textures"),
           to: path.resolve(__dirname, "dist/assets/textures"),
-        },
-        {
-          from: path.resolve(__dirname, "public/styles.css"),
-          to: path.resolve(__dirname, "dist/styles.css"),
         },
       ],
     }),
