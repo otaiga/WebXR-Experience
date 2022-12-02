@@ -4,6 +4,7 @@ import {
   Scene,
   AbstractMesh,
   WebXRDefaultExperience,
+  Vector3,
 } from "@babylonjs/core";
 import { CreateSceneClass } from "../createScene";
 import { loadAllAssets } from "../support/assetManager";
@@ -35,6 +36,12 @@ export class MainScreen implements CreateSceneClass {
 
     // Setup Floor
     const groundFloors: AbstractMesh[] = [];
+    const floorAsset = assets.models["floor.glb"];
+    for (const mesh of floorAsset.loadedMeshes) {
+      mesh.checkCollisions = true;
+      mesh.position.y += 0.2;
+      groundFloors.push(mesh);
+    }
 
     await new Promise<null | WebXRDefaultExperience>(async (resolve) => {
       try {
