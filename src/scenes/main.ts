@@ -40,7 +40,7 @@ export class MainScreen implements CreateSceneClass {
     for (const mesh of roomAsset.loadedMeshes) {
       mesh.position.y += 0.2;
       mesh.checkCollisions = true;
-      if (mesh.name === "Floor") {
+      if (mesh.name === "Floor" || mesh.name === "Ground") {
         groundFloors.push(mesh);
       }
     }

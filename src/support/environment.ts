@@ -14,10 +14,9 @@ export const setupEnvironment = (scene: Scene, camera: Camera) => {
   // Set the physics engine
   window.CANNON = CANNON;
 
-  const envText = CubeTexture.CreateFromPrefilteredData(
-    "assets/textures/canary_wharf.env",
-    scene
-  );
+  const envTexturePath = "assets/textures/snowy_park.env";
+
+  const envText = CubeTexture.CreateFromPrefilteredData(envTexturePath, scene);
 
   // // Fix orientation of the skybox texture
   envText.coordinatesMode = Texture.SKYBOX_MODE;
@@ -26,7 +25,7 @@ export const setupEnvironment = (scene: Scene, camera: Camera) => {
   scene.createDefaultEnvironment({
     skyboxTexture: envText,
     skyboxSize: 200,
-    environmentTexture: "assets/textures/canary_wharf.env",
+    environmentTexture: envTexturePath,
   });
 
   // add glow layer
