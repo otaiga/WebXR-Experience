@@ -35,7 +35,7 @@ export const loadAllAssets = (
     let textures: string[] = [];
     let sounds: string[] = [];
     let containerModels: string[] = [];
-    let models: string[] = ["room.glb"];
+    let models: string[] = ["snowScene.glb"];
 
     const assetsContainer: AssetsObject = {
       models: {},

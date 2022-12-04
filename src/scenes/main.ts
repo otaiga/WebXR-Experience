@@ -6,6 +6,7 @@ import {
   WebXRDefaultExperience,
   Vector3,
   PhysicsImpostor,
+  MeshBuilder,
 } from "@babylonjs/core";
 import { CreateSceneClass } from "../createScene";
 import { loadAllAssets } from "../support/assetManager";
@@ -35,36 +36,54 @@ export class MainScreen implements CreateSceneClass {
     // Setup a pipeline
     const pipeline = setupEnvironment(scene, camera);
 
+    // Get snow material
+    const snowMat = scene.materials.find((mat) => mat.name === "Snow");
+
     // Setup Floor
     const groundFloors: AbstractMesh[] = [];
-    const roomAsset = assets.models["room.glb"];
-    for (const mesh of roomAsset.loadedMeshes) {
-      mesh.position.y += 0.2;
-      mesh.checkCollisions = true;
-      if (mesh.name === "Floor" || mesh.name === "Ground") {
-        mesh.physicsImpostor = new PhysicsImpostor(
-          mesh,
-          PhysicsImpostor.BoxImpostor,
-          {
-            mass: 0,
-            friction: 0.8,
-            restitution: 0.5,
-            disableBidirectionalTransformation: true,
-          },
-          scene
-        );
-        groundFloors.push(mesh);
+
+    const createSnowBall = () => {
+      const sb = MeshBuilder.CreateSphere("snowball", { diameter: 0.3 });
+      sb.physicsImpostor = new PhysicsImpostor(
+        sb,
+        PhysicsImpostor.SphereImpostor,
+        {
+          mass: 1,
+          restitution: 0.9,
+        },
+        scene
+      );
+      sb.position = new Vector3(0, 1, -4);
+      if (snowMat) {
+        sb.material = snowMat;
       }
-      if (mesh.name === "snowball") {
-        mesh.physicsImpostor = new PhysicsImpostor(
-          mesh,
-          PhysicsImpostor.SphereImpostor,
-          {
-            mass: 1,
-          }
-        );
-      }
+    };
+
+    const ground = MeshBuilder.CreateGround("ground", {
+      width: 100,
+      height: 100,
+      subdivisions: 20,
+    });
+    ground.receiveShadows = true;
+    ground.position = new Vector3(0, 0, 0);
+    ground.checkCollisions = true;
+    ground.physicsImpostor = new PhysicsImpostor(
+      ground,
+      PhysicsImpostor.BoxImpostor,
+      {
+        mass: 0,
+        friction: 0.8,
+        restitution: 0.5,
+        disableBidirectionalTransformation: true,
+      },
+      scene
+    );
+    groundFloors.push(ground);
+    if (snowMat) {
+      ground.material = snowMat;
     }
+
+    createSnowBall();
 
     await new Promise<null | WebXRDefaultExperience>(async (resolve) => {
       try {
@@ -76,7 +95,12 @@ export class MainScreen implements CreateSceneClass {
       }
     });
 
-    // engine.hideLoadingUI();
+    // window.addEventListener("keydown", async (ev) => {
+    //   // debugger Ctrl+Alt+I
+    //   if (ev.ctrlKey && ev.altKey && ev.code === "KeyI") {
+    //     await runDebugger(scene);
+    //   }
+    // });
 
     return scene;
   };
