@@ -22,9 +22,10 @@ export const createSixDegreesOfDrag = (mesh: AbstractMesh) => {
   return sixdof;
 };
 
-export const createSnowBall = (scene: Scene) => {
-  const snowMat = scene.materials.find((mat) => mat.name === "Snow");
+export const createSnowBall = (scene?: Scene) => {
+  const snowMat = scene?.materials.find((mat) => mat.name === "Snow");
   const sb = MeshBuilder.CreateSphere("snowball", { diameter: 0.3 });
+  sb.checkCollisions = true;
   sb.physicsImpostor = new PhysicsImpostor(
     sb,
     PhysicsImpostor.SphereImpostor,
@@ -38,11 +39,5 @@ export const createSnowBall = (scene: Scene) => {
   if (snowMat) {
     sb.material = snowMat;
   }
-  createSixDegreesOfDrag(sb);
   sb.addBehavior(createSixDegreesOfDrag(sb));
-  sb.onCollide = (collidedMesh) => {
-    if (collidedMesh?.name === "deadzone") {
-      sb.dispose();
-    }
-  };
 };

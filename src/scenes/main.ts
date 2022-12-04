@@ -13,7 +13,7 @@ import { loadAllAssets } from "../support/assetManager";
 import { setupCamera } from "../support/camera";
 import { runDebugger } from "../support/debugger";
 import { setupEnvironment } from "../support/environment";
-import { createSixDegreesOfDrag, createSnowBall } from "../support/utils";
+import { createSnowBall } from "../support/utils";
 import { enableXR } from "../support/xr";
 
 export class MainScreen implements CreateSceneClass {
