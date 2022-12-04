@@ -10,6 +10,7 @@ import {
   Animation,
   BezierCurveEase,
 } from "@babylonjs/core";
+import { createSnowBall } from "./utils";
 
 export const enableXR = async (
   scene: Scene,
@@ -147,6 +148,15 @@ export const enableXR = async (
                   observers[inputSource.uniqueId] &&
                   meshesUnderPointer[inputSource.uniqueId]
                 ) {
+                  setTimeout(() => {
+                    const snowballs = scene.meshes.filter(
+                      (mesh) => mesh.name === "snowball"
+                    );
+                    for (const snowball of snowballs) {
+                      snowball.dispose();
+                    }
+                    createSnowBall(scene);
+                  }, 2000);
                   xr.baseExperience.sessionManager.onXRFrameObservable.remove(
                     observers[inputSource.uniqueId]
                   );

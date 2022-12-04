@@ -52,8 +52,12 @@ export const setupCamera = (scene: Scene) => {
   });
 
   // When camera hits something
-  camera.onCollide = (_collidedMesh) => {
+  camera.onCollide = (collidedMesh) => {
+    console.log(collidedMesh.name);
     grounded = true;
+    if (collidedMesh.name === "deadzone") {
+      camera.position = new Vector3(0, 1.5, 0);
+    }
   };
 
   return camera;

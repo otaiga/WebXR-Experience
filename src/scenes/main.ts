@@ -11,7 +11,9 @@ import {
 import { CreateSceneClass } from "../createScene";
 import { loadAllAssets } from "../support/assetManager";
 import { setupCamera } from "../support/camera";
+import { runDebugger } from "../support/debugger";
 import { setupEnvironment } from "../support/environment";
+import { createSixDegreesOfDrag, createSnowBall } from "../support/utils";
 import { enableXR } from "../support/xr";
 
 export class MainScreen implements CreateSceneClass {
@@ -29,6 +31,13 @@ export class MainScreen implements CreateSceneClass {
     // Load up all assets
     const assets = await loadAllAssets(assetManager, engine.loadingScreen);
 
+    const snowScene = assets.models["snowScene.glb"];
+    if (snowScene) {
+      for (const mesh of snowScene.loadedMeshes) {
+        mesh.checkCollisions = true;
+      }
+    }
+
     // Setup Camera
     const camera = setupCamera(scene);
     camera.rotation.y = -Math.PI;
@@ -42,26 +51,9 @@ export class MainScreen implements CreateSceneClass {
     // Setup Floor
     const groundFloors: AbstractMesh[] = [];
 
-    const createSnowBall = () => {
-      const sb = MeshBuilder.CreateSphere("snowball", { diameter: 0.3 });
-      sb.physicsImpostor = new PhysicsImpostor(
-        sb,
-        PhysicsImpostor.SphereImpostor,
-        {
-          mass: 1,
-          restitution: 0.9,
-        },
-        scene
-      );
-      sb.position = new Vector3(0, 1, -4);
-      if (snowMat) {
-        sb.material = snowMat;
-      }
-    };
-
     const ground = MeshBuilder.CreateGround("ground", {
-      width: 100,
-      height: 100,
+      width: 50,
+      height: 50,
       subdivisions: 20,
     });
     ground.receiveShadows = true;
@@ -83,7 +75,17 @@ export class MainScreen implements CreateSceneClass {
       ground.material = snowMat;
     }
 
-    createSnowBall();
+    const deadZone = MeshBuilder.CreateGround("deadzone", {
+      width: 200,
+      height: 200,
+      subdivisions: 20,
+    });
+
+    deadZone.checkCollisions = true;
+    deadZone.position = new Vector3(0, -1, 0);
+    deadZone.isVisible = false;
+
+    createSnowBall(scene);
 
     await new Promise<null | WebXRDefaultExperience>(async (resolve) => {
       try {
@@ -95,12 +97,12 @@ export class MainScreen implements CreateSceneClass {
       }
     });
 
-    // window.addEventListener("keydown", async (ev) => {
-    //   // debugger Ctrl+Alt+I
-    //   if (ev.ctrlKey && ev.altKey && ev.code === "KeyI") {
-    //     await runDebugger(scene);
-    //   }
-    // });
+    window.addEventListener("keydown", async (ev) => {
+      // debugger Ctrl+Alt+I
+      if (ev.ctrlKey && ev.altKey && ev.code === "KeyI") {
+        await runDebugger(scene);
+      }
+    });
 
     return scene;
   };
