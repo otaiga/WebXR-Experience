@@ -83,7 +83,12 @@ export const enableXR = async (
                     inputSource.uniqueId
                   );
                 }
-                if (mesh && mesh.physicsImpostor) {
+                if (
+                  mesh &&
+                  mesh.physicsImpostor &&
+                  mesh.name !== "Floor" &&
+                  mesh.name !== "Ground"
+                ) {
                   Animation.CreateAndStartAnimation(
                     "meshmove",
                     mesh,
