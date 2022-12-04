@@ -5,6 +5,7 @@ import {
   AbstractMesh,
   WebXRDefaultExperience,
   Vector3,
+  PhysicsImpostor,
 } from "@babylonjs/core";
 import { CreateSceneClass } from "../createScene";
 import { loadAllAssets } from "../support/assetManager";
@@ -41,7 +42,27 @@ export class MainScreen implements CreateSceneClass {
       mesh.position.y += 0.2;
       mesh.checkCollisions = true;
       if (mesh.name === "Floor" || mesh.name === "Ground") {
+        mesh.physicsImpostor = new PhysicsImpostor(
+          mesh,
+          PhysicsImpostor.BoxImpostor,
+          {
+            mass: 0,
+            friction: 0.8,
+            restitution: 0.5,
+            disableBidirectionalTransformation: true,
+          },
+          scene
+        );
         groundFloors.push(mesh);
+      }
+      if (mesh.name === "snowball") {
+        mesh.physicsImpostor = new PhysicsImpostor(
+          mesh,
+          PhysicsImpostor.SphereImpostor,
+          {
+            mass: 1,
+          }
+        );
       }
     }
 
